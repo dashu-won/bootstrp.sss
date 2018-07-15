@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="../bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="../dependecy/jquery.js"></script>
+    <script src="../dependecy/vue.js"></script>
+    <script src="../dependecy/lodash.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>响应式</title>
+</head>
+<body>
+    <div class="wrap">
+        <div class="inner"></div>
+    </div>
+    <div class="box">盒子</div>
+    <div class="test"></div>
+    <div id="left">Left sidebar</div>
+    <div id="content">Main Content</div>
+    <div class="div1 clearfloat">
+        <div class="Left">Left</div>
+        <div class="Right">Right</div>        
+    </div>
+    <div class="div2">div2</div>
+</body>
+</html>
+<script>
+    $("#left").addClass('btn btn-danger')
+</script>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+    }
+    .wrap{
+        width: 100px;
+        height: 100px;
+        background: red;
+        position: relative;
+    }
+    .inner{
+        height: 50px;
+        width: 50px;
+        top: 50%;
+        left: 50%;
+        position: absolute;
+        background: yellow;
+        transform: translateY(-50%) translateX(-50%);
+        /* transform: translateX(-50%); */
+        /* margin-top: -25px;
+        margin-left: -25px; */
+    }
+    .box{
+        padding: 10px;
+        height: 20px;
+        width: 200px;
+        box-sizing: content-box;
+        background-color: chartreuse;
+    }
+    .div1{
+        background-color: #9797e9;
+        border: 1px solid red;
+    }
+
+    .Left{
+        float: left;
+        width: 20%;
+        height: 200px;
+        background: #dddddd;
+    }
+
+    .Right{
+        float: right;
+        width: 30%;
+        height: 80px;
+        background: #dddddd;
+    }
+    .clearfloat{
+        zoom: 1;
+    }
+    
+    .clearfloat:after{
+        display: block;
+        content: "";
+        visibility: hidden;
+        height: 0;
+        clear: both;
+    }
+    .div2{
+        background-color: #e696e6;
+        border: 1px solid red;
+        height: 100px;
+        margin-top: 10px;
+    }
+
+    #left{
+        float: left;
+        width: 220px;
+        height: 200px;
+        
+    }
+
+    #content{
+        margin-left: 220px;
+        width: 220px;
+        height: 200px;  
+        background-color: orange;        
+    }
+    .test{
+        width: 300px;
+        height: 200px;
+        background: red;
+    }
+    @media screen  and (max-width: 900px) and (min-width: 500px){
+        .test{
+            width: 100%;
+            height: 100px;
+            background: blue;
+        }
+    }
+</style>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" manifest="html5.html.appcache">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../bootstrap-3.3.7-dist/css/bootstrap.css">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>html5</title>
+    <style>
+        div {
+            width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            margin: 20px 10px 10px 10px;
+            border-radius: 10px;
+        }
+
+        #video1,
+        img {
+            background-color: rgb(17, 12, 5);
+            border-radius: 25px;
+        }
+
+        #floatCenter {
+            width: 700px;
+        }
+
+        #div1,
+        #div2 {
+            float: left;
+            width: 198px;
+            height: 100px;
+            border: 1px solid #aaaaaa;
+            margin: 0 30px;
+            border-radius: 25px;
+        }
+
+        #canvasDiv {
+            float: left;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="div">
+        <button class="btn btn-primary" onclick="playPause()">播放/暂停</button>
+        <button class="btn btn-primary" onclick="makeBig()">大</button>
+        <button class="btn btn-primary" onclick="makeNormal()">中</button>
+        <button class="btn btn-primary" onclick="makeSmall()">小</button>
+        <br>
+        <video id="video1" width="300" height="200" controls="controls">
+            <source src="C:/Users/dashu/Videos/mov_bbb.mp4" type="video/mp4"> Your browser does not support the video tag.
+        </video>
+        <audio width="300" height="50" controls>
+            <source src="C:/Users/dashu/Videos/song.ogg" type="video/ogg">
+        </audio>
+    </div>
+
+    <div id="floatCenter">
+        <div id="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <img src="C:/Users/dashu/Pictures/FLAMING MOUNTAIN.JPG" width="198px" height="100px" draggable="true" ondragstart="drag(event)"
+                id="drag1" />
+        </div>
+        <div id="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    </div>
+    <div id="canvasDiv">
+        <canvas id="myCanvas"></canvas>
+        <canvas id="myCanvas1"></canvas>
+        <canvas id="myCanvas2"></canvas>
+        <canvas id="myCanvas3"></canvas>
+        <canvas id="myCanvas4"></canvas>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="190">
+        <polygon points="100,10,40,180,190,60,10,60,160,180" style="fill:red;stroke:blue;stroke-width:3;fill-rule:evenodd;" />
+    </svg>
+    <p id="demo">点击这个按钮，获得您的坐标：</p>
+    <button onclick="getLocation()">试一下</button>
+    <p>Count number:
+        <output id="result"></output>
+    </p>
+    <button onclick="startWorker()">Start Worker</button>
+    <button onclick="stopWorker()">Stop Worker</button>
+</body>
+<script>
+    var w;
+
+    function startWorker() {
+        if (typeof (Worker) !== "undefined") {
+            if (typeof (w) == "undefined") {
+                w = new Worker("C:/project/html5/demo_workers.js");
+            }
+            w.onmessage = function (event) {
+                document.getElementById("result").innerHTML = event.data;
+            };
+        }
+        else {
+            document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
+        }
+    }
+
+    function stopWorker() {
+        w.terminate();
+    }
+    if (localStorage.pageCount) {
+        localStorage.pageCount = Number(localStorage.pageCount) + 1
+    } else {
+        localStorage.pageCount = 1;
+    }
+    if (sessionStorage.pageCount) {
+        sessionStorage.pageCount = Number(sessionStorage.pageCount) + 1;
+    } else {
+        sessionStorage.pageCount = 1;
+    }
+    console.log(`Visit ${localStorage.pageCount} times!`);
+    console.log(`Visit ${sessionStorage.pageCount} times!`)
+    var x = document.getElementById("demo");
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }
+        else { x.innerHTML = "Geolocation is not supported by this browser."; }
+    }
+    function showPosition(position) {
+        x.innerHTML = "Latitude: " + position.coords.latitude +
+            "<br />Longitude: " + position.coords.longitude;
+    }
+    var c = document.getElementById('myCanvas');
+    var c1 = document.getElementById('myCanvas1');
+    var c2 = document.getElementById('myCanvas2');
+    var c3 = document.getElementById('myCanvas3');
+    var c4 = document.getElementById('myCanvas4');
+    var cxt = c.getContext("2d");
+    var cxt1 = c1.getContext('2d');
+    var cxt2 = c2.getContext('2d');
+    var cxt3 = c3.getContext('2d');
+    var cxt4 = c4.getContext('2d');
+    var img = new Image();
+    img.src = "./下载.png";
+    img.onload = function () {
+        cxt4.drawImage(img, 0, 0);
+    };
+    var grd = cxt3.createLinearGradient(0, 0, 200, 50);
+    grd.addColorStop(0, '#ff0000');
+    grd.addColorStop(1, '#00ff00');
+    cxt3.fillStyle = grd;
+    cxt3.fillRect(10, 50, 175, 50);
+    cxt2.fillStyle = '#000';
+    cxt2.beginPath();
+    cxt2.arc(70, 65, 50, 0, Math.PI * 2, true);
+    cxt2.closePath();
+    cxt2.fill();
+    cxt1.moveTo(50, 100);
+    cxt1.lineTo(100, 10);
+    cxt1.lineTo(150, 100);
+    cxt1.lineTo(50, 50);
+    cxt1.lineTo(150, 50);
+    cxt1.lineTo(50, 100);
+    cxt1.stroke();
+    cxt.fillStyle = '#ccc';
+    cxt.fillRect(10, 10, 200, 100);
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("Text", ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("Text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+    var myVideo = document.getElementById("video1")
+    function playPause() {
+        if (myVideo.paused) {
+            myVideo.play()
+        } else {
+            myVideo.pause()
+        }
+    }
+    function makeBig() {
+        myVideo.width = myVideo.width + 100;
+        myVideo.height = myVideo.height + 50;
+    }
+    function makeNormal() {
+        myVideo.width = 300;
+        myVideo.height = 200;
+    }
+    function makeSmall() {
+        myVideo.width = myVideo.width - 50;
+        myVideo.height = myVideo.height - 25;
+    }
+</script>
+
+</html>
